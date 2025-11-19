@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Metro Genesis</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            text-align: center;
+        }
+        #game-container {
+            display: inline-block;
+            margin-top: 50px;
+        }
+        canvas {
+            border: 2px solid #333;
+            background: white;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            background: #4466ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚇 Metro Genesis</h1>
+    <p>Генератор метро в случайных городах</p>
+    
+    <div id="game-container">
+        <button onclick="generateCity()">Сгенерировать город</button>
+        <br>
+        <canvas id="game-canvas" width="800" height="600"></canvas>
+    </div>
+
+    <script>
+        function generateCity() {
+            const canvas = document.getElementById('game-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Очищаем canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Рисуем реку
+            ctx.strokeStyle = '#4466ff';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(100, 300);
+            for(let i = 1; i < 15; i++) {
+                ctx.lineTo(100 + i * 50, 300 + Math.sin(i) * 50);
+            }
+            ctx.stroke();
+            
+            // Рисуем районы
+            const districts = [
+                {x: 200, y: 200, name: "Центр", color: "#ff6666"},
+                {x: 500, y: 150, name: "Жилой", color: "#66ff66"},
+                {x: 600, y: 400, name: "Промзона", color: "#6666ff"}
+            ];
+            
+            districts.forEach(district => {
+                ctx.fillStyle = district.color;
+                ctx.beginPath();
+                ctx.arc(district.x, district.y, 30, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.fillStyle = '#000';
+                ctx.font = '12px Arial';
+                ctx.fillText(district.name, district.x - 20, district.y - 40);
+            });
+            
+            alert('Город сгенерирован! Скоро здесь будет полноценная игра!');
+        }
+        
+        // Автогенерация при загрузке
+        window.onload = generateCity;
+    </script>
+</body>
+</html>
